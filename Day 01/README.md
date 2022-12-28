@@ -66,6 +66,29 @@ Now that we have the code to get Pico H to talk, we just need to flash the devic
 
 Now that we know how to write code and flash it onto the board. We will be making the onboard LED turn on.
 
-This will require us to use the GPIO pins and the breadboard.
+This activity will require us to use the GPIO pins and the breadboard. 
 
+For this we will using the `machine` package to get access to the LED light.
+[machine package for pico](https://tinygo.org/docs/reference/microcontrollers/machine/pico/)
+
+The machine package is a package provided by TinyGo that allow us to access parts of the machine without the requirement of having to access each indivdual pin.
+
+From here we will be able to get access to the leds via the `LED` constant, we can then use that to configure the pins.
+
+```go
+package main
+
+import (
+	"machine"
+)
+
+func main() {
+	led := machine.LED
+	led.Configure(machine.PinConfig{Mode: machine.PinOutput})
+
+	led.High()
+}
+```
+
+Once we have flashed this onto the board, the LED will now be shining.
 
