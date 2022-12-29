@@ -194,3 +194,147 @@ func main() {
 ```
 
 ### Activity 3: LED Sequence
+For the final activity this day, we will be creating a traffic light system using the 3 LED lights.
+
+This will be using leaning on the `time` package, `for` loops and introducing `structs` which is a type in Go.
+
+First we will be creating the `TrafficLight` struct that will contain all of the commands to put the lights into the state that we want.
+
+```go
+type TrafficLights struct {
+	red   machine.Pin
+	amber machine.Pin
+	green machine.Pin
+}
+```
+
+Each property on the traffic lights will be a `machine.Pin`, this is due to us providing direct access to the LED lights to the traffic light.
+
+That we have a struct with access to the pins, we will be making methods on the struct to control these. Methods are like functions but allow us to encasplate the logic so it can only be access from the public APIs on the struct that we provide.
+
+For the `TrafficLight` struct we will be making the methods `stop`, `start`, `slow` and `warn` publicly available to control the state of the lights.
+
+We have made all of the lights private inside of the `TrafficLights` struct, so we can't get ourselves into a state where we can manually change them and set the lights to red and green being on and amber being off, since this isn't a valid traffic light state.
+
+Information around how we make struct properties public and private can be found here: [Go by Example: Structs](https://gobyexample.com/structs)
+
+Now that we have the struct, we need to create the methods defined.
+[Go by Example: Methods](https://gobyexample.com/methods)
+```go
+func (t *TrafficLights) stop() {
+	t.red.High()
+	t.amber.Low()
+	t.green.Low()
+}
+
+func (t *TrafficLights) start() {
+	t.red.Low()
+	t.amber.Low()
+	t.green.High()
+}
+
+func (t *TrafficLights) ready() {
+	t.red.Low()
+	t.amber.High()
+	t.green.Low()
+}
+
+func (t *TrafficLights) slow() {
+	t.red.Low()
+	t.amber.High()
+	t.green.High()
+}
+```
+
+Here we are able to set the exact state of the lights depending on the situation we want to occur. So for example when we want to `stop()` then all the lights apart from `red` is set to `Low()` while `red` is set to `High()`.
+
+This allows us to reuse the method to always set the lights to a stop state.
+
+With the new struct and all of the methods to control the lights in the exact state that we want, we can create a loop that will allow us to loop over the states of a traffic light.
+
+```go
+for {
+    trafficLights.stop()
+    time.Sleep(time.Second * 5)
+    trafficLights.ready()
+    time.Sleep(time.Second * 2)
+    trafficLights.start()
+    time.Sleep(time.Second * 5)
+    trafficLights.slow()
+    time.Sleep(time.Second * 2)
+}
+```
+
+Using the `time` package we are able to give cars time to move and even stop of traffic coming the other way, if we had another set of lights available.
+
+The full activity is the following:
+```go
+package main
+
+import (
+	"machine"
+	"time"
+)
+
+func main() {
+	outputConfig := machine.PinConfig{
+		Mode: machine.PinOutput,
+	}
+
+	greenLed := machine.GPIO18
+	greenLed.Configure(outputConfig)
+
+	yellowLed := machine.GPIO19
+	yellowLed.Configure(outputConfig)
+
+	redLed := machine.GPIO20
+	redLed.Configure(outputConfig)
+
+	trafficLights := TrafficLights{
+		red:   redLed,
+		amber: yellowLed,
+		green: greenLed,
+	}
+
+	for {
+		trafficLights.stop()
+		time.Sleep(time.Second * 5)
+		trafficLights.ready()
+		time.Sleep(time.Second * 2)
+		trafficLights.start()
+		time.Sleep(time.Second * 5)
+		trafficLights.slow()
+		time.Sleep(time.Second * 2)
+	}
+}
+
+type TrafficLights struct {
+	red   machine.Pin
+	amber machine.Pin
+	green machine.Pin
+}
+
+func (t *TrafficLights) stop() {
+	t.red.High()
+	t.amber.Low()
+	t.green.Low()
+}
+
+func (t *TrafficLights) start() {
+	t.red.Low()
+	t.amber.Low()
+	t.green.High()
+}
+
+func (t *TrafficLights) ready() {
+	t.red.Low()
+	t.amber.High()
+	t.green.Low()
+}
+
+func (t *TrafficLights) slow() {
+	t.red.Low()
+	t.amber.High()
+	t.green.High()
+}
+```

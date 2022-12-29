@@ -18,7 +18,7 @@ func main() {
 
 	redLed := machine.GPIO20
 	redLed.Configure(outputConfig)
-	
+
 	counter := 0
 
 	for counter <= 11 {
