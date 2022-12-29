@@ -11,6 +11,8 @@ Each project will be within their own directory to allow for each day to work wi
 ### List of Projects:
 
 - Setting up the Board
+- Blinking LED Lights
+- Traffic Light System
 
 ## Setting up TinyGo
 Setting up TinyGo can be found via their website for the latest version of the language.
@@ -23,3 +25,8 @@ For our example we will be using version `tinygo version 0.26.0 darwin/amd64 (us
 - Raspberry Pico H
 - USB to Micro USB cable
 - Breadboard
+- 1x 5mm Red LED
+- 1x 5mm Amber LED
+- 1x 5mm Green LED
+- 3x 330 ohm resistors
+- 4x Male to male jumper wires

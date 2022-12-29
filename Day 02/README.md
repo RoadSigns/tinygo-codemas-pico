@@ -108,6 +108,89 @@ func main() {
 ```
 
 ### Activity 2: Flashing LEDs
+Now that we can turn the LED lights on and off, we will be looking at introducing a loop that will allow us to continuously flash the LED lights.
 
+In the example they use a `while` loop in Python, however in Go they have different loops.
+
+We will be using a `for` loop with a condition to achieve the same result as the `while` loop. This will keep looping the as long as the condition is `true`.
+
+```go
+for condition {
+
+}
+```
+
+To achieve this for loop we will need to assign a value to a variable so we can keep the state of the counter for the loop.
+
+This is achieved in Go by using `:=`
+```go
+counter := 0
+```
+
+This allows us to increment the counter everytime we loop over the lights flashing.
+
+Now that we have the loop, the LED logic and the counter variable, we can start looping and counting up the counter until the logic is false.
+
+```go
+counter := 0
+
+for counter <= 11 {
+    greenLed.High()
+    yellowLed.High()
+    redLed.High()
+    time.Sleep(time.Second)
+
+    greenLed.Low()
+    yellowLed.Low()
+    redLed.Low()
+    time.Sleep(time.Second)
+
+    counter++
+}
+```
+
+At the end of the loop we are using incrementing the counter variable by 1 by using `++`. This ensures that we aren't stuck in an infinite loop since the counter will increment to 11.
+
+
+The final code looks like the following:
+```go
+package main
+
+import (
+	"machine"
+	"time"
+)
+
+func main() {
+	outputConfig := machine.PinConfig{
+		Mode: machine.PinOutput,
+	}
+
+	greenLed := machine.GPIO18
+	greenLed.Configure(outputConfig)
+
+	yellowLed := machine.GPIO19
+	yellowLed.Configure(outputConfig)
+
+	redLed := machine.GPIO20
+	redLed.Configure(outputConfig)
+	
+	counter := 0
+
+	for counter <= 11 {
+		greenLed.High()
+		yellowLed.High()
+		redLed.High()
+		time.Sleep(time.Second)
+
+		greenLed.Low()
+		yellowLed.Low()
+		redLed.Low()
+		time.Sleep(time.Second)
+
+		counter++
+	}
+}
+```
 
 ### Activity 3: LED Sequence
