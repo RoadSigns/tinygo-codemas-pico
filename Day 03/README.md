@@ -309,5 +309,26 @@ func main() {
 ```
 
 ### Activity 4: This button or that button?
+In the previous activity we learnt about the `&&` operator, in this activity we will be learning about `OR` or `||` operators. This will allow us to run logical statements that allow two buttons to control the same led light.
+
+Unlike the `&&` the `||` operator only requires one side of the logical statement to be `true` for the condition to be `true`.
+
+```go
+if buttonOne.Get() || buttonTwo.Get() {
+	greenLed.High()
+}
+greenLed.Low()
+```
+
+From here we can now control the `greedLed` with both the `buttonOne` and `buttonTwo`
 
 ### Activity 5: Toggling with buttons
+Another feature that we will be introducing is the ability to toggle the state of the led from the state of the button.
+
+This can be done by using the `Get()` and `Set()` methods on the `machine.Pin` struct.
+
+```go
+greenLed.Set(buttonOne.Get())
+```
+
+From here we are now able to turn the light on when we press the button.

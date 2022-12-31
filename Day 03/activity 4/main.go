@@ -27,8 +27,8 @@ func main() {
 		if buttonOne.Get() || buttonTwo.Get() {
 			greenLed.High()
 		}
-			greenLed.Low()
-	
+		greenLed.Low()
+
 		time.Sleep(time.Second)
 	}
 }
